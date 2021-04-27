@@ -9,7 +9,11 @@ const options = {
 
 const dbConnect = () => {
   mongoose.connect(process.env.DATABASE_STRING, options).then(() => {
-    console.log('DB connected');
+    try {
+      console.log('DB connected');
+    } catch (e) {
+      console.log(e);
+    }
   });
 };
 
