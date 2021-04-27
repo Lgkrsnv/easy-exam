@@ -1,7 +1,65 @@
-<h1>Main page</h1>
+<script defer src="js/modal.js"></script>
 
-<form action="POST" action='/'>
-<input type="file" name="file" id="file">
-<label for="file">Load file</label>
-<button>Load</button>
-</form>
+<h1>Main page</h1>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Форма авторизации</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody"> 
+        <form id="formLogin">
+          <div class="mb-3">
+            <label for="inputEmail1" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="inputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputPassword1" class="form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword1">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button form="formLogin" class="btn btn-primary" type="submit" id="login">Войти</button>
+          </div>
+        </form>
+        <span>или <a href="#" data-bs-dismiss="modal" id="registrationModal">Зарегистрироваться</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Форма регистрации</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody"> 
+        <form id="formLogin">
+          <div class="mb-3">
+            <label for="inputUsernameRegistr" class="form-label">Username</label>
+            <input type="text" class="form-control" id="inputUsernameRegistr" aria-describedby="usernameHelp">
+            <div id="usernameHelp" class="form-text">We'll never share your username with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputEmail1Registr" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="inputEmail1Registr" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputPassword1Registr" class="form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword1Registr">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button form="formLogin" class="btn btn-primary" type="submit" id="registration">Зарегистрироваться</button>
+          </div>
+        </form>
+        <span>Есть аккаунт? <a href="#" data-bs-dismiss="modal" id="getModal2">Войти</a></span>
+      </div>
+    </div>
+  </div>
+</div>
