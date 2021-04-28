@@ -12,6 +12,11 @@ const profileRouter = require('./routes/profile');
 const { cookiesCleaner } = require('./middleware/auth');
 
 const app = express();
+
+const http = require('http').createServer(app);
+// const socketServer = require("socket.io")(http);
+
+
 dbConnect();
 
 // view engine setup
@@ -26,6 +31,7 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 const options = {
   store: MongoStore.create({ mongoUrl: process.env.DATABASE_STRING }),
   key: 'user_sid',
@@ -37,8 +43,37 @@ const options = {
   },
 };
 
-app.use(session(options));
+const sessionMiddleware = session(options);
 
+app.use(sessionMiddleware);
+
+// подключаем middleware сессий для сокетов
+// socketServer.use((socket, next) => {
+//   sessionMiddleware(socket.request, {}, next);
+// });
+const io = require("socket.io")(http);
+
+io.on('connection', socket => {
+  console.log('Connection Ready');
+
+  socket.on('sendMessage', msg => {
+    console.log(msg);
+    console.log(socket.rooms);
+    console.log(socket.id);
+    socket.emit('sendToAll', msg);
+      // отправка на индивидуальный socketid (личное сообщение)
+      // io.to(`${socketId}`).emit('hey', 'I just met you');
+
+  // ВНИМАНИЕ: `socket.to(socket.id).emit()` НЕ будет работать, как бы мы отправляли сообщение всем в комнату
+  // `socket.id`, а не отправителю. Вместо этого, используйте `socket.emit()`.
+  });
+});
+
+// io.sockets.on('connect', (socket) => {
+  
+//   const sessionID = socket.id;
+//   console.log('connect', sessionID);
+// });
 
 app.use(cookiesCleaner);
 
@@ -73,4 +108,4 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app, http};

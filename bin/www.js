@@ -4,9 +4,9 @@
  * Module dependencies.
  */
 
-const app = require('../app');
+const { app, http: server } = require('../app');
 const debug = require('debug')('avito-clone-challenge:server');
-const http = require('http');
+// const http = require('http');
 
 /**
  * Get port from environment and store in Express.
@@ -19,7 +19,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.

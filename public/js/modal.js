@@ -1,5 +1,5 @@
 document.addEventListener('click', async (event) => {
-  event.preventDefault();
+  // event.preventDefault();
   const myModalLogin = new bootstrap.Modal(document.getElementById('exampleModal'));
   const myModalRegistration = new bootstrap.Modal(document.getElementById('exampleModal2'));
   if (event.target.id === 'getModal' || event.target.id === 'getModal2') {
