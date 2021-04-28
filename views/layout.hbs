@@ -26,6 +26,9 @@
         <li class="nav-item">
           <a class="nav-link active" href="/chat">Chat</a>
         </li>
+        {{#if admin}}
+          <a class="nav-link active" href="/adminChats">Chats</a>
+        {{/if}}
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>

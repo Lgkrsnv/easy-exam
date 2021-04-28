@@ -10,11 +10,13 @@ const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const profileRouter = require('./routes/profile');
 const { cookiesCleaner } = require('./middleware/auth');
-
+const Chat = require('./models/chat');
+const User = require('./models/user');
 const app = express();
 
 const http = require('http').createServer(app);
 // const socketServer = require("socket.io")(http);
+const io = require('socket.io')(http);
 
 
 dbConnect();
@@ -48,32 +50,46 @@ const sessionMiddleware = session(options);
 app.use(sessionMiddleware);
 
 // подключаем middleware сессий для сокетов
-// socketServer.use((socket, next) => {
-//   sessionMiddleware(socket.request, {}, next);
-// });
-const io = require("socket.io")(http);
-
-io.on('connection', socket => {
-  console.log('Connection Ready');
-
-  socket.on('sendMessage', msg => {
-    console.log(msg);
-    console.log(socket.rooms);
-    console.log(socket.id);
-    socket.emit('sendToAll', msg);
-      // отправка на индивидуальный socketid (личное сообщение)
-      // io.to(`${socketId}`).emit('hey', 'I just met you');
-
-  // ВНИМАНИЕ: `socket.to(socket.id).emit()` НЕ будет работать, как бы мы отправляли сообщение всем в комнату
-  // `socket.id`, а не отправителю. Вместо этого, используйте `socket.emit()`.
-  });
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
 });
 
-// io.sockets.on('connect', (socket) => {
-  
-//   const sessionID = socket.id;
-//   console.log('connect', sessionID);
+// io.sockets.on('connection', (socket) => {
+//   console.log("Connected user");
+//   socket.on('join', (msg) => {
+//     socket.join(msg.name); // We are using room of socket io
+//     io.sockets.in(msg.name).emit('new_msg', {new_msg: 'hello'});
+//   });
 // });
+
+io.on('connection', (socket) => {
+  console.log('Connection Ready');
+  console.log("socket befoooooooooooooooooooore", socket.id);
+
+  socket.on('sendFirstMessage', async (msg) => {
+
+    // console.log(Object.keys(io.sockets.sockets));
+    // console.log(msg);
+    // console.log(socket.rooms);
+    // console.log(socket.id);
+    console.log(socket);
+    const author = socket.request.session.user;
+    // console.log(author);
+    const admin = await User.findOne({ _id: '6088445269149c8c5443244d' });
+    // console.log(admin);
+    let newChat = await Chat.create({ messages: msg.message, socketId: msg.socketId });
+    const user = await User.findOne({ email: author.email });
+    // console.log(user);
+    newChat = await Chat.findByIdAndUpdate({ _id: newChat.id }, { admin: admin.id, user: user.id });
+    // console.log(newChat);
+    socket.broadcast.emit('sendToAll', msg);
+    // отправка на индивидуальный socketid (личное сообщение)
+    //     io.to(`${socketId}`).emit('hey', 'I just met you');
+
+    // ВНИМАНИЕ: `socket.to(socket.id).emit()` НЕ будет работать, как бы мы отправляли сообщение всем в комнату
+    // `socket.id`, а не отправителю. Вместо этого, используйте `socket.emit()`.
+  });
+});
 
 app.use(cookiesCleaner);
 
@@ -82,7 +98,7 @@ app.use((req, res, next) => {
   if (req.session.user) {
     res.locals.name = req.session.user.name;
     res.locals.admin = req.session.user.role;
-    console.log('req.session ==>', req.session);
+    // console.log('req.session ==>', req.session);
   }
   next();
 });
@@ -108,4 +124,7 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-module.exports = {app, http};
+module.exports = { app, http };
+
+
+//6088445269149c8c5443244d

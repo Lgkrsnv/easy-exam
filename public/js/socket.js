@@ -1,50 +1,6 @@
 // const socket = window.io("http://localhost:3000/");
 const socket = io();
 
-// const socketConnection = io.connect();
-// socketConnection.on('connect', () => {
-//   const sessionID = socketConnection.socket.sessionid;
-//   console.log(sessionID);
-// });
-
-
-console.log("hello");
-const msgText = document.querySelector('#msg');
-const btnSend = document.querySelector('#btn-send');
-const chatBox = document.querySelector('.chat-content');
-const displayMsg = document.querySelector('.message');
-
-let name;
-do {
-  name = prompt('What is your name?')
-} while (!name);
-
-document.querySelector('#your-name').textContent = name;
-msgText.focus();
-
-
-btnSend.addEventListener('click', (e) => {
-  e.preventDefault();
-  sendMsg(msgText.value);
-  msgText.value = '';
-  msgText.focus();
-  chatBox.scrollTop = chatBox.scrollHeight;
-});
-
-const sendMsg = message => {
-  let msg = {
-    user: name,
-    message: message.trim(),
-  };
-  display(msg, 'you-message');
-  socket.emit('sendMessage', msg);
-};
-
-socket.on('sendToAll', msg => {
-  display(msg, 'other-message');
-  chatBox.scrollTop = chatBox.scrollHeight;
-});
-
 const display = (msg, type) => {
   const msgDiv = document.createElement('div');
   const className = type;
@@ -65,3 +21,51 @@ const display = (msg, type) => {
   msgDiv.innerHTML = innerText;
   displayMsg.appendChild(msgDiv);
 };
+// const socketConnection = io.connect();
+// socketConnection.on('connect', () => {
+//   const sessionID = socketConnection.socket.sessionid;
+//   console.log(sessionID);
+// });
+
+
+const msgText = document.querySelector('#msg');
+const btnSend = document.querySelector('#btn-send');
+const chatBox = document.querySelector('.chat-content');
+const displayMsg = document.querySelector('.message');
+
+let name;
+
+do {
+  name = prompt('Как Вас зовут?')
+} while (!name);
+
+document.querySelector('#your-name').textContent = name;
+msgText.focus();
+
+btnSend.addEventListener('click', (e) => {
+  e.preventDefault();
+  console.log(socket.id);
+  sendMsg(msgText.value);
+  msgText.value = '';
+  msgText.focus();
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+
+
+const sendMsg = message => {
+  let msg = {
+    socketId: socket.id,
+    user: name,
+    message: message.trim(),
+  };
+
+  display(msg, 'you-message');
+  // socket.emit('join', msg);
+  socket.emit('sendFirstMessage', msg);
+};
+
+socket.on('sendToAll', msg => {
+  display(msg, 'other-message');
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+
