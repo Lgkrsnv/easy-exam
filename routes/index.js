@@ -63,4 +63,11 @@ router.get("/logout", async (req, res, next) => {
   }
 });
 
+router.get('/chat', async (req, res) => {
+  res.render('chat');
+});
+
+router.get('/adminChats', async (req, res) => {
+  res.render('adminChats');
+});
 module.exports = router;
