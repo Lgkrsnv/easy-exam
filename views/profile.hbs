@@ -1,1 +1,73 @@
-<h1>Hi, Vladimir</h1>
+<script defer src="js/profile.js"></script>
+  <br></br>
+<h1 id='hello'>Здравствуйте, {{name}}</h1>
+  <br></br>
+<div class="row">
+<div class='col-sm-3 col-md-2 col-xs-12'>
+  <ul class="nav flex-column">
+    <li class="nav-item">
+      <a class="nav-link active" aria-current="page" href="/profile?mydata={{name}}">Мои данные</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/profile?myorders={{name}}">Мои заказы</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/profile?successorder={{name}}">Готовые работы</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/profile?neworder={{name}}" tabindex="-1" aria-disabled="true">Заказать работу</a>
+    </li>
+  </ul>
+  </div>
+  {{#if mydata}}
+<div class='col-sm-9 col-md-10 col-xs-12'>
+  <div class="mb-3 row">
+    <label for="userName" class="col-sm-2 col-form-label">Name:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="userName" value="{{name}}">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="userEmail" class="col-sm-2 col-form-label">Email:</label>
+    <div class="col-sm-10">
+      <input type="email" class="form-control" id="userEmail" value="{{email}}">
+    </div>
+  </div>
+  <div class="mb-3 row">
+    <label for="userPhone" class="col-sm-2 col-form-label">Phone:</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="userPhone" value="{{name.phone}}">
+    </div>
+  </div>
+      <button type="button" class="btn btn-primary" id="save">Сохранить изменения</button>
+      <button type="button" class="btn btn-danger" id="deleteProfile">Удалить профиль</button>
+      <br></br>
+      <div class="alert alert-primary invisible" id='submessage' role="alert">
+      </div>
+    <div class="mb-3 row">
+    <h3>Изменить пароль:</h3>
+     <div class="mb-3">
+        <label for="pas" class="form-label">Cтарый пароль:</label>
+        <input type="password" class="form-control" id="pas" aria-describedby="usernameHelp">
+      </div>
+      <div class="mb-3">
+        <label for="newPas" class="form-label">Новый пароль:</label>
+        <input type="password" class="form-control" id="newPas" aria-describedby="usernameHelp">
+      </div>
+      <div class="mb-3">
+        <label for="newPasRepeat" class="form-label">Повторите новый пароль:</label>
+        <input type="password" class="form-control" id="newPasRepeat" aria-describedby="emailHelp">
+        <div class="form-text" id="for-new-password">We'll never share your password with anyone else.</div>
+      </div>
+      <div class="col-sm-10">
+        <button type="button" class="btn btn-primary" id="savePassword">Сохранить</button>
+      </div>
+              <br></br>
+        <div class="alert alert-primary invisible" id='submessage2' role="alert">
+      </div>
+    </div>
+  </div>
+
+{{/if}}
+
+
