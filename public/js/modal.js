@@ -35,6 +35,7 @@ document.addEventListener('click', async (event) => {
       });
   }
   if (event.target.id === 'registration') {
+    event.preventDefault();
     const name = document.getElementById('inputUsernameRegistr').value;
     const email = document.getElementById('inputEmail1Registr').value;
     const password = document.getElementById('inputPassword1Registr').value;

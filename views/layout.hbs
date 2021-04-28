@@ -5,9 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="styles/style.css">
   <script defer src="js/script.js"></script>
+  <script defer src="js/modal.js"></script>
   <title>Student project</title>
 </head>
 <body>
@@ -34,11 +35,19 @@
         </li>
       </ul>
         {{#if name}}
-        <a class="btn btn-outline-success" href="/logout">Выйти</a>
+          <div class="dropdown"  id='myDropdown'>
+          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="/profile?mydata={{name}}">Мои данные</a></li>
+              <li><a class="dropdown-item" href="/profile?myorders={{name}}">Мои заказы</a></li>
+              <li><a class="dropdown-item" href="/profile?successorder={{name}}">Готовые работы</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="/logout">Выйти</a></li>
+            </ul>
+          </div>
         {{else}}
         <button class="btn btn-outline-success" type="button" id="getModal">Войти</button>
         {{/if}}
-        
         {{#if admin}}
           <a class="btn btn-outline-success">Админ</a>
         {{/if}}
@@ -46,10 +55,15 @@
   </div>
   </div>
 </nav>
-  {{{body}}}
-</body>
-  <footer>
 
+  <div class='container'>
+  {{{body}}}
+</div>
+</body>
+
+  
+
+  <footer>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
   {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script> --}}

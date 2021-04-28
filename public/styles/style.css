@@ -1,3 +1,4 @@
+
 * {
   margin: 0;
   padding: 0;
@@ -130,4 +131,13 @@
 }
 ::-webkit-scrollbar {
   display: none;
+
+.label-order {
+ color: #91919c;
+ margin: 16px 0 3px;
+}
+
+.checkbox-order {
+  margin-top: 40px;
+
 }
