@@ -10,7 +10,7 @@ document.addEventListener('click', async (event) => {
     myModalLogin.hide();
   }
   if (event.target.id === 'login') {
-    const name = document.getElementById('inputUsername').value;
+    // const name = document.getElementById('inputUsername').value;
     const email = document.getElementById('inputEmail1').value;
     const password = document.getElementById('inputPassword1').value;
     await fetch('/login', {
@@ -19,7 +19,7 @@ document.addEventListener('click', async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name, email, password,
+        email, password,
       }),
     }).then((res) => {
       console.log(res);
@@ -35,13 +35,13 @@ document.addEventListener('click', async (event) => {
     const name = document.getElementById('inputUsernameRegistr').value;
     const email = document.getElementById('inputEmail1Registr').value;
     const password = document.getElementById('inputPassword1Registr').value;
-    await fetch('/login', {
+    await fetch('/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        name, email, password,
+         name, email, password,
       }),
     }).then((res) => {
       console.log(res);
