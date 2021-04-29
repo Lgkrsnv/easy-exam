@@ -6,3 +6,45 @@
 .checkbox-order {
   margin-top: 40px;
 }
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.section-title {
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 38px;
+}
+.show-more {
+  font-size: 18px;
+  line-height: 21px;
+}
+.news {
+  padding-bottom: 70px;
+}
+
+.news-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+
+.news-text-column {
+  width: 400px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  background-color: #f1f2f4;
+}
