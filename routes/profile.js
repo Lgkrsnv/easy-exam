@@ -10,17 +10,18 @@ const router = express.Router();
 const upload = multer({ storage });
 
 /* GET home page. */
-router.route('/')
-  .get(sessionChecker, async (req, res) => {
-    const { mydata } = req.query;
-    const { neworder } = req.query;
-    console.log(neworder);
-    const myUser = await User.findOne({ email: req.session.user.email }).lean();
-    console.log(myUser);
-    if (mydata || neworder) {
-      return res.render('profile', { mydata, neworder });
-    }
-  })
+
+// router.route('/')
+//   .get(sessionChecker, async (req, res) => {
+//     const { mydata } = req.query;
+//     const { neworder } = req.query;
+//     console.log(neworder);
+//     const myUser = await User.findOne({ email: req.session.user.email }).lean();
+//     console.log(myUser);
+//     if (mydata || neworder) {
+//       return res.render('profile', { mydata, neworder });
+//     }
+//   })
 
   // .post('/upload', upload.single('file'), (req, res) => {
   //   // const upload = multer({ storage }).single('file');
@@ -33,9 +34,21 @@ router.route('/')
   //   res.json({ file: req.file });
   // })
 
-  .put(sessionChecker, async (req, res) => {
+router.route('/').get(sessionChecker, async (req, res) => {
+  const {
+    mydata, successorder, myorders, neworder,
+  } = req.query;
+  const myUser = await User.findOne({ email: req.session.user.email });
+  console.log(myUser);
+  if (mydata || successorder || myorders || neworder) {
+    return res.render('profile', {
+      mydata, myorders, successorder, neworder, myUser,
+    });
+  }
+  return res.render('profile', { myUser });
+})
+  .put(sessionChecker, async (req, res, next) => {
     try {
-      console.log(req.body);
       const { name, email, phone } = req.body;
       const user = await User.findOneAndUpdate({ email: req.session.user.email }, { $set: { name, email, phone } }, { returnOriginal: false });
       req.session.user = user;

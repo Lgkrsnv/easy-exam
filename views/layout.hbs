@@ -9,8 +9,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"/>
   <link rel="stylesheet" href="/styles/style.css">
   <link rel="stylesheet" href="/styles/chatStyle.css">
-  {{!-- <script src="js/script.js"></script> --}}
+  <script defer src="js/validator.js"></script>
   <script defer src="/js/modal.js"></script>
+
   <title>Student project</title>
 </head>
 <body>
@@ -32,14 +33,14 @@
 
       </ul>
         {{#if name}}
-          <div class="dropdown"  id='myDropdown'>
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/profile?mydata=2">Мои данные</a></li>
-              <li><a class="dropdown-item" href="/profile?myorders={{name}}">Мои заказы</a></li>
-              <li><a class="dropdown-item" href="/profile?successorder={{name}}">Готовые работы</a></li>
+          <div class="dropdown">
+          <button id="dLabel" class="btn btn-outline-secondary dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
+            <ul class="dropdown-menu" aria-labelledby="dLabel">
+              <li><a class="dropdown-item" href="/profile?mydata={{name}}" id='mydata'>Мои данные</a></li>
+              <li><a class="dropdown-item" href="/profile?myorders={{name}}" id='myorders'>Мои заказы</a></li>
+              <li><a class="dropdown-item" href="/profile?successorder={{name}}" id='successorder'>Готовые работы</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/logout">Выйти</a></li>
+              <li><a class="dropdown-item" href="/logout" id='logout'>Выйти</a></li>
             </ul>
           </div>
         {{else}}
@@ -52,6 +53,75 @@
   </div>
   </div>
 </nav>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Форма авторизации</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody"> 
+        <form id="formLogin">
+          <div class="mb-3">
+            <label for="inputEmail1" class="form-label">Электронная почта:</label>
+            <input type="email" class="form-control" id="inputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text" id='subMessageEmail'>We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputPassword1" class="form-label">Пароль:</label>
+            <input type="password" class="form-control" id="inputPassword1">
+             <div id="emailHelp" class="form-text" id='subMessagePassword'>We'll never share your password with anyone else.</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button form="formLogin" class="btn btn-primary" type="submit" id="login">Войти</button>
+          </div>
+        </form>
+        <span>или <a href="#" data-bs-dismiss="modal" id="registrationModal">Зарегистрироваться</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Форма регистрации</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody"> 
+
+        <form id="formLogin2">
+
+          <div class="mb-3">
+            <label for="inputUsernameRegistr" class="form-label">Username</label>
+            <input type="text" class="form-control" id="inputUsernameRegistr" aria-describedby="usernameHelp">
+            <div id="usernameHelp" class="form-text">We'll never share your username with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputEmail1Registr" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="inputEmail1Registr" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputEmail1Registr" class="form-label">Phone</label>
+            <input type="email" class="form-control" id="inputEmail1Registr" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your phone with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputPassword1Registr" class="form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword1Registr">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button form="formLogin" class="btn btn-primary" type="submit" id="registration">Зарегистрироваться</button>
+          </div>
+        </form>
+        <span>Есть аккаунт? <a href="#" data-bs-dismiss="modal" id="getModal2">Войти</a></span>
+      </div>
+    </div>
+  </div>
+</div>
 
 {{#if name}}
   <div class='container'>
@@ -63,14 +133,12 @@
 <div class="showChat">
 <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
-{{!-- <h1 id="chat">Chat</h1> --}}
   <div class="chat-container">
     <div class="chat-header">
       <div class="logo">
         <i class="far fa-comments"></i>
         <h3>Messenger</h3>
       </div>
-      {{!-- <p id="your-name">Your name</p> --}}
     </div>
     {{!-- ------------------------------ --}}
     <div class="chat-section">
@@ -78,30 +146,11 @@
         <div class="chat-content">
           <div class="message">
             <div class="message-row other-message">
-              {{!-- <div class="message-title">
-                🗨️<span>Менеджер</span>
-              </div>
-              <div class="message-text">
-                Hello
-              </div>
-              <div class="message-time">
-                28 Апреля
-              </div> --}}
             </div>
             <div class="message-row you-message">
-              {{!-- <div class="message-title">
-                🗨️<span>Пользователь</span>
-              </div>
-              <div class="message-text">
-                Ok
-              </div>
-              <div class="message-time">
-                28 Апреля
-              </div> --}}
             </div>
           </div>
         </div>
-        {{!-- ---------------------------------- --}}
         <form class="msg-tex">
           <input type="text" name="msg" id="msg" placeholder="Type Message here..." autocapitalize="off">
           <button id="btn-send">
@@ -123,11 +172,10 @@
 {{/if}}
 
   {{{body}}}
-</div>
-</body>
 
   
-
+  </div>
   <footer>
   </footer>
+
 </html>

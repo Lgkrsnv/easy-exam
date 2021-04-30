@@ -28,6 +28,7 @@ const User = require('./models/user');
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const profileRouter = require('./routes/profile');
+const orderRouter = require('./routes/order');
 
 const { cookiesCleaner } = require('./middleware/auth');
 const chat = require('./models/chat');
@@ -175,29 +176,6 @@ io.on('connection', async (socket) => {
     console.log(message);
     await chat.create({ new: message });
   });
-
-  // socket.on('sendFirstMessage', async (msg) => {
-  //   // console.log(Object.keys(io.sockets.sockets));
-  //   // console.log(msg);
-  //   // console.log(socket.rooms);
-  //   // console.log(socket.id);
-  //   console.log(socket);
-  //   const author = socket.request.session.user;
-  //   // console.log(author);
-  //   const admin = await User.findOne({ _id: '6088445269149c8c5443244d' });
-  //   // console.log(admin);
-  //   let newChat = await Chat.create({ messages: msg.message, socketId: msg.socketId });
-  //   const user = await User.findOne({ email: author.email });
-  //   // console.log(user);
-  //   newChat = await Chat.findByIdAndUpdate({ _id: newChat.id }, { admin: admin.id, user: user.id });
-  //   // console.log(newChat);
-  //   socket.broadcast.emit('sendToAll', msg);
-  //   // отправка на индивидуальный socketid (личное сообщение)
-  //   //     io.to(`${socketId}`).emit('hey', 'I just met you');
-
-  //   // ВНИМАНИЕ: `socket.to(socket.id).emit()` НЕ будет работать, как бы мы отправляли сообщение всем в комнату
-  //   // `socket.id`, а не отправителю. Вместо этого, используйте `socket.emit()`.
-  // });
 });
 
 app.use(cookiesCleaner);
@@ -206,6 +184,7 @@ app.use((req, res, next) => {
   // console.log(req.session.username);
   if (req.session.user) {
     res.locals.name = req.session.user.name;
+    res.locals.email = req.session.user.email;
     res.locals.admin = req.session.user.role;
     // console.log('req.session ==>', req.session);
   }
@@ -216,7 +195,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/profile', profileRouter);
-
+app.use('/order', orderRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
@@ -236,6 +215,3 @@ app.use((err, req, res, next) => {
 module.exports = {
   app, http, storage, upload, gfs,
 };
-
-
-//6088445269149c8c5443244d
