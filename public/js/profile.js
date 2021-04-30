@@ -56,7 +56,7 @@ if (document.getElementById('deleteProfile')) {
     }).then((res) => {
       console.log(res);
       if (res.ok) {
-        window.location = 'http://localhost:3000/';
+        window.location = res.url;
       }
     })
       .catch((error) => {
