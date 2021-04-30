@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const Order = require('../models/order');
 
 const { sessionChecker } = require('../middleware/auth');
 
@@ -23,13 +24,14 @@ const router = express.Router();
 
 router.route('/').get(sessionChecker, async (req, res) => {
   const {
-    mydata, successorder, myorders, neworder,
+    mydata, successorder, myorders, neworder, allorders,
   } = req.query;
-  const myUser = await User.findOne({ email: req.session.user.email });
-  console.log(myUser);
-  if (mydata || successorder || myorders || neworder) {
+  const myUser = await User.findOne({ email: req.session.user.email }).populate('orders');
+  const orders = await Order.find();
+
+  if (mydata || successorder || myorders || neworder || allorders) {
     return res.render('profile', {
-      mydata, myorders, successorder, neworder, myUser,
+      mydata, myorders, successorder, neworder, myUser, allorders, orders,
     });
   }
   return res.render('profile', { myUser });

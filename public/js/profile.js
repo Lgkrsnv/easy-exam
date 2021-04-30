@@ -85,17 +85,21 @@ document.addEventListener('click', async (event) => {
   if (event.target.id === 'showModal') {
     myModalDelete.show();
   }
-  const myModalСancelled = new bootstrap.Modal(document.getElementById('myModalCancel'));
+  // const myModalСancelled = new bootstrap.Modal(document.getElementById('myModalCancel'));
+  // if (event.target.id === 'showModalCancel') {
+  //   myModalСancelled.show();
+  // }
   if (event.target.id === 'showModalCancel') {
-    myModalСancelled.show();
-  }
-  if (event.target.id === 'cancel') {
-    const id = 'тут номер или айди заказа';
-    await fetch(`/order/`, {
+    // const id = 'тут номер или айди заказа';
+    event.preventDefault();
+
+    const { id } = event.target.closest('div');
+    await fetch(`/order/${id}`, {
       method: 'DELETE',
     }).then((res) => {
       if (res.ok) {
-        window.location = res.url;
+        event.target.closest('div').remove();
+        // window.location = res.url;
       }
     });
   }

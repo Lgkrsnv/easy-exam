@@ -7,7 +7,6 @@ const orderSchema = new mongoose.Schema({
   number: {
     type: Number,
     default: 0,
-    unique: true,
   },
   deadline: { type: String },
   sources: { type: Number },
