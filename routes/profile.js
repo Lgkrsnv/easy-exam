@@ -1,13 +1,11 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const multer = require('multer');
 const User = require('../models/user');
-// const upload = require('../app');
+
 const { sessionChecker } = require('../middleware/auth');
-const storage = require('../app');
 
 const router = express.Router();
-const upload = multer({ storage });
+
 
 /* GET home page. */
 
@@ -22,17 +20,6 @@ const upload = multer({ storage });
 //       return res.render('profile', { mydata, neworder });
 //     }
 //   })
-
-  // .post('/upload', upload.single('file'), (req, res) => {
-  //   // const upload = multer({ storage }).single('file');
-  //   // upload(req, res, (err) => {
-  //   //   if (err) {
-  //   //     return res.end('error uploading file');
-  //   //   }
-  //   //   res.end('File if uploaded!');
-  //   // });
-  //   res.json({ file: req.file });
-  // })
 
 router.route('/').get(sessionChecker, async (req, res) => {
   const {
