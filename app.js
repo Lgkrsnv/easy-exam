@@ -9,6 +9,7 @@ const dbConnect = require('./db/dbConnect');
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const profileRouter = require('./routes/profile');
+const orderRouter = require('./routes/order');
 const { cookiesCleaner } = require('./middleware/auth');
 
 const app = express();
@@ -46,6 +47,7 @@ app.use((req, res, next) => {
   // console.log(req.session.username);
   if (req.session.user) {
     res.locals.name = req.session.user.name;
+    res.locals.email = req.session.user.email;
     res.locals.admin = req.session.user.role;
     console.log('req.session ==>', req.session);
   }
@@ -56,7 +58,7 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/login', loginRouter);
 app.use('/profile', profileRouter);
-
+app.use('/order', orderRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));

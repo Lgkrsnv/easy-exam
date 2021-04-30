@@ -5,10 +5,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="styles/style.css">
-  <script defer src="js/script.js"></script>
   <script defer src="js/modal.js"></script>
+  <script defer src="js/script.js"></script>
+  <script defer src="js/validator.js"></script>
   <title>Student project</title>
 </head>
 <body>
@@ -32,14 +33,14 @@
         </li>
       </ul>
         {{#if name}}
-          <div class="dropdown"  id='myDropdown'>
-          <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/profile?mydata={{name}}">Мои данные</a></li>
-              <li><a class="dropdown-item" href="/profile?myorders={{name}}">Мои заказы</a></li>
-              <li><a class="dropdown-item" href="/profile?successorder={{name}}">Готовые работы</a></li>
+          <div class="dropdown">
+          <button id="dLabel" class="btn btn-outline-secondary dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
+            <ul class="dropdown-menu" aria-labelledby="dLabel">
+              <li><a class="dropdown-item" href="/profile?mydata={{name}}" id='mydata'>Мои данные</a></li>
+              <li><a class="dropdown-item" href="/profile?myorders={{name}}" id='myorders'>Мои заказы</a></li>
+              <li><a class="dropdown-item" href="/profile?successorder={{name}}" id='successorder'>Готовые работы</a></li>
               <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="/logout">Выйти</a></li>
+              <li><a class="dropdown-item" href="/logout" id='logout'>Выйти</a></li>
             </ul>
           </div>
         {{else}}
@@ -52,12 +53,81 @@
   </div>
   </div>
 </nav>
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Форма авторизации</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody"> 
+        <form id="formLogin">
+          <div class="mb-3">
+            <label for="inputEmail1" class="form-label">Электронная почта:</label>
+            <input type="email" class="form-control" id="inputEmail1" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text" id='subMessageEmail'>We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputPassword1" class="form-label">Пароль:</label>
+            <input type="password" class="form-control" id="inputPassword1">
+             <div id="emailHelp" class="form-text" id='subMessagePassword'>We'll never share your password with anyone else.</div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button form="formLogin" class="btn btn-primary" type="submit" id="login">Войти</button>
+          </div>
+        </form>
+        <span>или <a href="#" data-bs-dismiss="modal" id="registrationModal">Зарегистрироваться</a></span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Форма регистрации</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modalBody"> 
+
+        <form id="formLogin2">
+
+          <div class="mb-3">
+            <label for="inputUsernameRegistr" class="form-label">Username</label>
+            <input type="text" class="form-control" id="inputUsernameRegistr" aria-describedby="usernameHelp">
+            <div id="usernameHelp" class="form-text">We'll never share your username with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputEmail1Registr" class="form-label">Email address</label>
+            <input type="email" class="form-control" id="inputEmail1Registr" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputEmail1Registr" class="form-label">Phone</label>
+            <input type="email" class="form-control" id="inputEmail1Registr" aria-describedby="emailHelp">
+            <div id="emailHelp" class="form-text">We'll never share your phone with anyone else.</div>
+          </div>
+          <div class="mb-3">
+            <label for="inputPassword1Registr" class="form-label">Password</label>
+            <input type="password" class="form-control" id="inputPassword1Registr">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button form="formLogin" class="btn btn-primary" type="submit" id="registration">Зарегистрироваться</button>
+          </div>
+        </form>
+        <span>Есть аккаунт? <a href="#" data-bs-dismiss="modal" id="getModal2">Войти</a></span>
+      </div>
+    </div>
+  </div>
+</div>
 
   <div class='container'>
   {{{body}}}
+  
   </div>
   <footer>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
 </body>
 </html>
