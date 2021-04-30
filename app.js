@@ -143,7 +143,7 @@ const botName = 'Elbrus Bot';
 
 io.on('connection', async (socket) => {
 
-  const projects = await fetchProjects(socket);
+  // const projects = await fetchProjects(socket);
   const author = socket.request.session.user.name;
   socket.emit('getName', author);
 
@@ -185,6 +185,7 @@ app.use((req, res, next) => {
   if (req.session.user) {
     res.locals.name = req.session.user.name;
     res.locals.email = req.session.user.email;
+    res.locals.phone = req.session.user.phone;
     res.locals.admin = req.session.user.role;
     // console.log('req.session ==>', req.session);
   }
