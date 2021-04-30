@@ -15,5 +15,3 @@ function validPhone(phone) {
   }
   return false;
 }
-
-

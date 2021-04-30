@@ -34,8 +34,8 @@
       </ul>
         {{#if name}}
           <div class="dropdown">
-          <button id="dLabel" class="btn btn-outline-secondary dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
-            <ul class="dropdown-menu" aria-labelledby="dLabel">
+          <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
+            <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="/profile?mydata={{name}}" id='mydata'>Мои данные</a></li>
               <li><a class="dropdown-item" href="/profile?myorders={{name}}" id='myorders'>Мои заказы</a></li>
               <li><a class="dropdown-item" href="/profile?successorder={{name}}" id='successorder'>Готовые работы</a></li>
@@ -105,8 +105,8 @@
           </div>
           <div class="mb-3">
             <label for="inputEmail1Registr" class="form-label">Phone</label>
-            <input type="email" class="form-control" id="inputEmail1Registr" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your phone with anyone else.</div>
+            <input type="tel" class="form-control" id="inputPhone1Registr" aria-describedby="phoneHelp">
+            <div id="phoneHelp" class="form-text">We'll never share your phone with anyone else.</div>
           </div>
           <div class="mb-3">
             <label for="inputPassword1Registr" class="form-label">Password</label>
@@ -140,7 +140,6 @@
         <h3>Messenger</h3>
       </div>
     </div>
-    {{!-- ------------------------------ --}}
     <div class="chat-section">
       <div class="main-wrapper">
         <div class="chat-content">
@@ -162,13 +161,12 @@
   </div>
 
   <script defer src="/js/socket.js"></script>
-  {{!-- <script src="/socket.io/socket.io.js"></script> --}}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
 </div>
 <!-- конец HTML-кода для вставки чата на сайт -->  
 <a class="close" title="Закрыть" onclick="document.getElementById('parent_popup_click1').style.display='none';"></a>
 </div>
-</div><!--/ всплывающее окно с виджетом чата chatemplate -->
+</div>
 {{/if}}
 
   {{{body}}}
