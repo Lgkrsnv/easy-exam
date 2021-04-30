@@ -12,7 +12,6 @@ document.addEventListener('click', async (event) => {
   }
   if (event.target.id === 'login') {
     event.preventDefault();
-    // const name = document.getElementById('inputUsername').value;
     const email = document.getElementById('inputEmail1').value;
     const password = document.getElementById('inputPassword1').value;
     await fetch('/login', {
@@ -44,7 +43,7 @@ document.addEventListener('click', async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-         name, email, password,
+        name, email, password,
       }),
     }).then((res) => {
       console.log(res);

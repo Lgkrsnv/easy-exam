@@ -2,26 +2,10 @@ const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
-// const getUserName = document.getElementById('username');
-// const getRoomName = document.getElementById('room');
-
-// Get username and room from URL
-// const { username, room } = qs.parse(location.search, {
-//   ignoreQueryPrefix: true,
-// });
 
 const username = new URLSearchParams(window.location.search).get('username');
 const room = new URLSearchParams(window.location.search).get('room');
 console.log(username, room);
-
-// document.addEventListener('click', (event) => {
-//   if ()
-//   const username = getUserName.value;
-//   console.log(username);
-//   const room = getRoomName.value;
-//   console.log(room);
-
-// });
 
 const socket = window.io('http://localhost:3000/');
 // const socket = io();
