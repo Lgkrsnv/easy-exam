@@ -16,23 +16,19 @@ const app = express();
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
-const Qs = require('qs');
 const dbConnect = require('./db/dbConnect');
 
-const { userJoin, getCurrentUser, getRoomUsers } = require('./middleware/chatUsers');
+const { userJoin, getCurrentUser } = require('./middleware/chatUsers');
 const formatMessage = require('./middleware/chatMessages');
 
-const Chat = require('./models/chat');
-const User = require('./models/user');
+const Order = require('./models/order');
 
 const indexRouter = require('./routes/index');
-const loginRouter = require('./routes/login');
 const profileRouter = require('./routes/profile');
 const orderRouter = require('./routes/order');
 
 const { cookiesCleaner } = require('./middleware/auth');
 const chat = require('./models/chat');
-// const socketServer = require("socket.io")(http);
 
 dbConnect();
 
@@ -48,6 +44,25 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+const options = {
+  store: MongoStore.create({ mongoUrl: process.env.DATABASE_STRING }),
+  key: 'user_sid',
+  secret: 'panda',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    expires: 1000 * 60 * 30,
+  },
+};
+
+const sessionMiddleware = session(options);
+
+app.use(sessionMiddleware);
+// подключаем middleware сессий для сокетов
+io.use((socket, next) => {
+  sessionMiddleware(socket.request, {}, next);
+});
 
 // Init gfs
 let gfs;
@@ -76,9 +91,47 @@ const storage = new GridFsStorage({
 });
 const upload = multer({ storage });
 
-app.post('/upload', upload.single('file'), (req, res) => {
-  res.json({ file: req.file });
-  // res.redirect('/');
+app.post('/upload', upload.single('file'), async (req, res) => {
+  const {
+    type,
+    pages,
+    deadline,
+    sources,
+    foreignSources,
+    originality,
+    plagiat,
+    plagiReport,
+    subject,
+    topic,
+    font,
+    university,
+    authorQualifications,
+    requirements,
+  } = req.body;
+
+  const allOrders = await Order.find();
+  const orderNum = allOrders.length + 1;
+  const newOrder = await Order.create({
+    username: req.session.user.name,
+    type,
+    pages,
+    number: orderNum,
+    deadline,
+    sources,
+    foreignSources,
+    originality,
+    plagiat,
+    plagiReport,
+    subject,
+    topic,
+    font,
+    university,
+    authorQualifications,
+    requirements,
+    file: req.file,
+  });
+
+  return res.redirect('/profile?myorders=2');
 });
 
 // app.get('/files', (req, res) => {
@@ -112,64 +165,30 @@ app.post('/upload', upload.single('file'), (req, res) => {
 //   });
 // });
 
-const options = {
-  store: MongoStore.create({ mongoUrl: process.env.DATABASE_STRING }),
-  key: 'user_sid',
-  secret: 'panda',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    expires: 1000 * 60 * 30,
-  },
-};
-
-const sessionMiddleware = session(options);
-
-app.use(sessionMiddleware);
-
-// подключаем middleware сессий для сокетов
-io.use((socket, next) => {
-  sessionMiddleware(socket.request, {}, next);
-});
-
-// io.sockets.on('connection', (socket) => {
-//   console.log("Connected user");
-//   socket.on('join', (msg) => {
-//     socket.join(msg.name); // We are using room of socket io
-//     io.sockets.in(msg.name).emit('new_msg', {new_msg: 'hello'});
-//   });
-// });
 const botName = 'Elbrus Bot';
 
 io.on('connection', async (socket) => {
-
   // const projects = await fetchProjects(socket);
   const author = socket.request.session.user.name;
   socket.emit('getName', author);
 
   console.log('Connection Ready');
-  // console.log("socket befoooooooooooooooooooore", socket.id);
 
   socket.on('joinRoom', ({ username, room }) => {
     const user = userJoin(socket.id, username, room);
 
-    // socket.join(user.room);
+    socket.join(user.room);
 
     socket.emit('message', formatMessage(botName, 'Администратор ответит в ближайшее время...'));
 
     socket.broadcast
       .to(user.room)
       .emit('message', formatMessage(botName, `${user.username} has joined the chat`));
-
-    // io.to(user.room).emit('roomUsers', {
-    //   room: user.room,
-    //   users: getRoomUsers(user.room),
-    // });
   });
 
   socket.on('chatMessage', async msg => {
     const user = getCurrentUser(socket.id);
-    io.to(user.id).emit('message', formatMessage(user.username, msg));
+    io.to(user.room).emit('message', formatMessage(user.username, msg));
   });
 
   socket.on('msgToDb', async (message) => {
@@ -192,9 +211,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
 app.use('/', indexRouter);
-app.use('/login', loginRouter);
 app.use('/profile', profileRouter);
 app.use('/order', orderRouter);
 // catch 404 and forward to error handler
@@ -214,5 +231,5 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = {
-  app, http, storage, upload, gfs,
+  app, http,
 };

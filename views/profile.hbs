@@ -31,7 +31,7 @@
       {{#if neworder}}
       <a class="btn btn-primary btn-sm" href="/profile?neworder=4">Заказать работу</a>
       {{else}}
-      <a class="btn btn-sm" href="/profile?neworde=4">Заказать работу</a>
+      <a class="btn btn-sm" href="/profile?neworder=4">Заказать работу</a>
       {{/if}}
     </li>
   </ul>
@@ -145,14 +145,14 @@
               <label for="inputType" class="label-order">Тип работы</label>
               <select id="inputType" class="form-select" name ="type">
                 <option selected="" disabled="disabled">Выберите тип работы</option>
-                <option value="type0">Диплом</option>
-                <option value="type1">Курсовая</option>
-                <option value="type2">Реферат</option>
+                <option value="Диплом" data-workPrice = '= 10.000 руб'>Диплом</option>
+                <option value="Курсовая" data-workPrice = '= 5.000 руб'>Курсовая</option>
+                <option value="Реферат" data-workPrice = '= 3.500 руб'>Реферат</option>
               </select>
             </div>
             <div class="col-sm-4">
               <label for="inputPages" class="label-order">Кол-во страниц</label>
-              <input class="form-control" id="inputPages" name="pages" type="text" min="1">
+              <input class="form-control" id="inputPages" name="pages" type="number" min="1">
             </div>
           </div>
         </div>
@@ -160,15 +160,15 @@
           <div class="row">
             <div class="col-sm-4">
               <label for="inputDeadline" class="label-order">Срок сдачи</label>
-              <input type="text" id="inputDeadline" name="deadline" class="form-control" value="09.09.2021">
+              <input type="date" id="inputDeadline" name="deadline" class="form-control" value="09.09.2021">
             </div>
             <div class="col-sm-4">
               <label for="inputSources" class="label-order">Кол-во источников</label>
-              <input id="inputSources" name="sources" min="1" class="form-control" type="text">
+              <input id="inputSources" name="sources" min="1" class="form-control" type="number">
             </div>
             <div class="col-sm-4">
               <label class="checkbox-order label-order">
-                  <input class="default" type="checkbox" id="foreign_sources" name="foreign_sources" value="1">
+                  <input class="default" type="checkbox" id="foreign_sources" name="foreignSources" value="1">
                   <span class="check-label">Иностранные источники</span>
               </label>
             </div>
@@ -182,30 +182,30 @@
                 <div class="col-sm-4">
                   <label for="inputOriginality" class="label-order">Оригинальность</label>
                   <select id="inputOriginality" class="form-select" name ="originality">
-                    <option selected value="orig0">Неважно</option>
-                    <option value="orig1">21%-30%</option>
-                    <option value="orig2">31%-40%</option>
-                    <option value="orig3">41%-50%</option>
-                    <option value="orig4">51%-60%</option>
-                    <option value="orig5">61%-70%</option>
-                    <option value="orig6">71%-80%</option>
-                    <option value="orig7">81%-90%</option>
-                    <option value="orig8">91%-100%</option>
+                    <option selected value="Неважно">Неважно</option>
+                    <option value="21%-30%">21%-30%</option>
+                    <option value="31%-40%">31%-40%</option>
+                    <option value="41%-50%">41%-50%</option>
+                    <option value="51%-60%">51%-60%</option>
+                    <option value="61%-70%">61%-70%</option>
+                    <option value="71%-80%">71%-80%</option>
+                    <option value="81%-90%">81%-90%</option>
+                    <option value="91%-100%">91%-100%</option>
                   </select>
                 </div>
                 <div class="col-sm-8">
                       <label for="inputPlagiat" class="label-order">Проверка</label>
                       <select id="inputPlagiat" class="form-select" name ="plagiat">
-                        <option value="plag0">Проверка по eTXT</option>
-                        <option selected value="plag1">Проверка по antiplagiat.ru</option>
-                        <option value="plag2">Антиплагиат ВУЗ</option>
+                        <option value="Проверка по eTXT">Проверка по eTXT</option>
+                        <option selected value="Проверка по antiplagiat.ru">Проверка по antiplagiat.ru</option>
+                        <option value="Антиплагиат ВУЗ">Антиплагиат ВУЗ</option>
                       </select>
                 </div>
             </div>
         </div>
         <div class="col-md-6 col-sm-3 col-xs-12 co_provider_wrap">
           <label class="checkbox-order label-order">
-            <input type="checkbox" id="plagi_report" name="plagi_report" value="1">
+            <input type="checkbox" id="plagi_report" name="plagiReport" value="1">
             <span class="check-label">Отчёт о плагиате</span>
           </label>
         </div>
@@ -226,10 +226,10 @@
         <div class="col-md-6 col-xs-12">
           <label for="inputFont" class="label-order">Шрифт</label>
           <select id="inputFont" class="form-select" name ="font">
-            <option selected value="font0">14 шрифт, полуторный интервал</option>
-            <option value="font1">12 шрифт, полуторный интервал</option>
-            <option value="font2">14 шрифт, одинарный интервал</option>
-            <option value="font2">12 шрифт, одинарный интервал</option>
+            <option selected value="14 шрифт, полуторный интервал">14 шрифт, полуторный интервал</option>
+            <option value="12 шрифт, полуторный интервал">12 шрифт, полуторный интервал</option>
+            <option value="14 шрифт, одинарный интервал">14 шрифт, одинарный интервал</option>
+            <option value="12 шрифт, одинарный интервал">12 шрифт, одинарный интервал</option>
           </select>
         </div>
         <div class="col-md-6 col-xs-12">
@@ -242,11 +242,11 @@
       <div class="row">
         <div class="col-md-6 col-xs-12">
           <label for="inputAuthor" class="label-order">Квалификация автора</label>
-          <select id="inputAuthor" class="form-select" name="author">
-              <option selected value="author0">Лучший доступный автор (стандартная цена)</option>
-              <option value="author1">Топ-автор с высокой средней оценкой</option>
-              <option value="author2">Кандидат наук</option>
-              <option value="author3">Доктор наук</option>
+          <select id="inputAuthor" class="form-select" name="authorQualifications">
+              <option selected value="Лучший доступный автор (стандартная цена)">Лучший доступный автор (стандартная цена)</option>
+              <option value="Топ-автор с высокой средней оценкой">Топ-автор с высокой средней оценкой</option>
+              <option value="Кандидат наук">Кандидат наук</option>
+              <option value="Доктор наук">Доктор наук</option>
           </select>
         </div>
       </div>
@@ -254,7 +254,7 @@
       <div class="row">
         <div class="col-md-6 col-xs-12">
           <label for="requirements" class="label-order">Требования(необязательно)</label>
-          <textarea id="requirements" name="inputReq" class="form-control" cols="30" rows="3"></textarea>
+          <textarea id="requirements" name="requirements" class="form-control" cols="30" rows="3"></textarea>
         </div>
       </div>
 
@@ -277,7 +277,7 @@
             <ul class="calc">
               <li>
                 <span>Минимальная стоимость</span>
-                <span>1,000.00 р.</span>
+                <span id="showPrice">= 0 р.</span>
               </li>
             </ul>
           </div>
@@ -289,7 +289,7 @@
           <div class="col-md-6 col-xs-12 m-auto d-flex flex-column align-items-center">
             <div class="total-cost">
               <span class="">Итого</span>
-              <span class="">= 1,000.00 р.</span>
+              <span id="showFinalPrice">= 0 р.</span>
             </div>
             <button type="submit" class="btn btn-primary btn-block" id="order-btn">Заказать</button>
           </div>
