@@ -1,5 +1,5 @@
-const socket = window.io('http://localhost:3000/');
-// const socket = io();
+// const socket = window.io('http://localhost:3000/');
+const socket = io();
 
 const msgText = document.querySelector('#msg');
 const btnSend = document.querySelector('#btn-send');

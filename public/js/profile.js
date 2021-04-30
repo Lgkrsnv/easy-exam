@@ -129,7 +129,7 @@ const showPrice = document.querySelector('#showPrice');
 const showFinalPrice = document.querySelector('#showFinalPrice');
 
 if (document.querySelector('#inputType')) {
-  document.querySelector('#inputType'). addEventListener('change', async (e) => {
+  document.querySelector('#inputType').addEventListener('change', async (e) => {
     const price = e.target.options[e.target.selectedIndex].dataset.workprice;
     showPrice.innerText = price;
     showFinalPrice.innerText = price;
