@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema({
   orders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
   canselledOrders: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
   role: String,
+  // messages: [{time, author, textmessage}],
+  // userId,
+  // adminId
 },
 {
   timestamps: true,
