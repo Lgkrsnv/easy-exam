@@ -1,0 +1,23 @@
+.order-container {
+  padding: 16px 16px 16px 16px;
+  box-shadow: 2px 2px 4px 0px rgba(94, 94, 94, 0.8);
+  padding: 30px;
+  width: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.button-container{
+
+}
+li {
+  list-style-type: none; 
+ }
+ ul {
+  margin-left: 20px; 
+  padding-left: 0; 
+ }
+ @media screen and (max-width:1200px){
+  
+}
