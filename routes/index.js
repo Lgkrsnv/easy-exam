@@ -1,9 +1,9 @@
 const express = require('express');
+
 const router = express.Router();
 const bcrypt = require('bcrypt');
-const multer = require('multer');
 const User = require('../models/user');
-const { upload, gfs, storage } = require('../app');
+
 /* GET home page. */
 
 const saltRounds = 10;
@@ -14,50 +14,15 @@ router
     res.render('index');
   });
 
-// router.post('/upload', upload.single('file'), (req, res) => {
-//   res.json({ file: req.file });
-//   // res.redirect('/');
-// });
-
-router.get('/files', (req, res) => {
-  gfs.files.find().toArray((err, files) => {
-    // Check if files
-    if (!files || files.length === 0) {
-      return res.status(404).json({
-        err: 'No files exist',
-      });
-    }
-
-    // Files exist
-    return res.json(files);
-  });
-});
-
-router.get('/files/:filename', (req, res) => {
-  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-    // Check if file
-    if (!file || file.length === 0) {
-      return res.status(404).json({
-        err: 'No file exists',
-      });
-    }
-    // File exists
-    if (file.contentType === 'text/plain') {
-      const readstream = gfs.createReadStream(file.filename);
-      readstream.pipe(res);
-    }
-    // return res.send(file);
-  });
-});
-
 router
   .route('/signup')
   .post(async (req, res, next) => {
     try {
-      const { name, email, password } = req.body;
+      const { name, email, password, phone } = req.body;
       const user = await User.create({
         name,
         email,
+        phone,
         password: await bcrypt.hash(password, saltRounds),
       });
       req.session.user = user;

@@ -44,7 +44,7 @@ document.addEventListener('click', async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-         name, email, password,
+        name, email, password,
       }),
     }).then((res) => {
       console.log(res);
