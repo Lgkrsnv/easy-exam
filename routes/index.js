@@ -61,8 +61,6 @@ router
         password: await bcrypt.hash(password, saltRounds),
       });
       req.session.user = user;
-      console.log('req.session.user!!!!!!!!!!!!!!!!!!!!!!!!!', req.session.user);
-      console.log('req.session.user.username!!!!!!!!!!!!!!1', req.session.user.username);
       res.sendStatus(200);
     } catch (error) {
       console.log(error);
