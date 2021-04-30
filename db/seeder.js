@@ -38,13 +38,14 @@ async function seeder() {
   // await User.create(seedUser);
 
 
-  const seedUser = {
-    name: 'Админ',
-    email: 'qwerty123@gmail.com',
-    password: await bcrypt.hash('123', 10),
-    role: 'admin',
-  };
-  await User.create(seedUser);
+  // const seedUser = {
+  //   name: 'Админ',
+  //   email: 'qwerty123@gmail.com',
+  //   password: await bcrypt.hash('123', 10),
+  //   role: 'admin',
+  // };
+  const userId = await User.findOne({ email: 'qwerty123@gmail.com' });
+  console.log(userId);
 
   mongoose.disconnect();
 }

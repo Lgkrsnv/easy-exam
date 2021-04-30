@@ -1,22 +1,54 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const { sessionChecker } = require('../middleware/auth');
+const multer = require('multer');
 const User = require('../models/user');
+// const upload = require('../app');
+const { sessionChecker } = require('../middleware/auth');
+const storage = require('../app');
 
 const router = express.Router();
+const upload = multer({ storage });
 
 /* GET home page. */
+
+// router.route('/')
+//   .get(sessionChecker, async (req, res) => {
+//     const { mydata } = req.query;
+//     const { neworder } = req.query;
+//     console.log(neworder);
+//     const myUser = await User.findOne({ email: req.session.user.email }).lean();
+//     console.log(myUser);
+//     if (mydata || neworder) {
+//       return res.render('profile', { mydata, neworder });
+//     }
+//   })
+
+  // .post('/upload', upload.single('file'), (req, res) => {
+  //   // const upload = multer({ storage }).single('file');
+  //   // upload(req, res, (err) => {
+  //   //   if (err) {
+  //   //     return res.end('error uploading file');
+  //   //   }
+  //   //   res.end('File if uploaded!');
+  //   // });
+  //   res.json({ file: req.file });
+  // })
+
 router.route('/').get(sessionChecker, async (req, res) => {
-  const mydata = req.query;
-  const myUser = await User.findOne({ email: req.session.user.email }).lean();
+  const {
+    mydata, successorder, myorders, neworder,
+  } = req.query;
+  const myUser = await User.findOne({ email: req.session.user.email });
   console.log(myUser);
-  if (mydata) {
-    res.render('profile', mydata);
+  if (mydata || successorder || myorders || neworder) {
+    return res.render('profile', {
+      mydata, myorders, successorder, neworder, myUser,
+    });
   }
+  return res.render('profile', { myUser });
 })
-  .put(sessionChecker, async (req, res) => {
+  .put(sessionChecker, async (req, res, next) => {
     try {
-      console.log(req.body);
       const { name, email, phone } = req.body;
       const user = await User.findOneAndUpdate({ email: req.session.user.email }, { $set: { name, email, phone } }, { returnOriginal: false });
       req.session.user = user;

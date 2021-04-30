@@ -1,5 +1,4 @@
 document.addEventListener('click', async (event) => {
-
   const myModalLogin = new bootstrap.Modal(document.getElementById('exampleModal'));
   const myModalRegistration = new bootstrap.Modal(document.getElementById('exampleModal2'));
   if (event.target.id === 'getModal' || event.target.id === 'getModal2') {
@@ -27,7 +26,7 @@ document.addEventListener('click', async (event) => {
     }).then((res) => {
       console.log(res);
       if (res.ok) {
-        window.location = 'http://localhost:3000/profile';
+        window.location = 'http://localhost:3000/profile?mydata=2';
       }
     })
       .catch((error) => {
