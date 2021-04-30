@@ -12,7 +12,6 @@ document.addEventListener('click', async (event) => {
   }
   if (event.target.id === 'login') {
     event.preventDefault();
-    // const name = document.getElementById('inputUsername').value;
     const email = document.getElementById('inputEmail1').value;
     const password = document.getElementById('inputPassword1').value;
     await fetch('/login', {

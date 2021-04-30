@@ -357,6 +357,7 @@ h1, h2 {
 }
 
 .main-footer {
+  min-height: 300px;
   padding-top: 65px;
   padding-bottom: 65px;
   background-color: #474747;
