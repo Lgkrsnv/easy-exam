@@ -8,6 +8,7 @@ const router = express.Router();
 router.route('/:id').delete(async (req, res) => {
   console.log(req.params);
   try {
+    await Order.deleteOne({ _id: req.params.id });
     res.sendStatus(200);
   } catch (e) {
     res.sendStatus(500);

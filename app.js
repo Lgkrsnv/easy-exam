@@ -22,6 +22,7 @@ const { userJoin, getCurrentUser } = require('./middleware/chatUsers');
 const formatMessage = require('./middleware/chatMessages');
 
 const Order = require('./models/order');
+const User = require('./models/user');
 
 const indexRouter = require('./routes/index');
 const profileRouter = require('./routes/profile');
@@ -109,8 +110,10 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     requirements,
   } = req.body;
 
+  const numb = (min, max) => Math.floor(Math.random() * (max - min) + min);
+  ;
   const allOrders = await Order.find();
-  const orderNum = allOrders.length + 1;
+  const orderNum = numb(10, 1000);
   const newOrder = await Order.create({
     username: req.session.user.name,
     type,
@@ -131,39 +134,45 @@ app.post('/upload', upload.single('file'), async (req, res) => {
     file: req.file,
   });
 
+  await User.findOneAndUpdate(
+    { name: req.session.user.name },
+    { $push: { orders: newOrder.id } },
+    { returnOriginal: false },
+  );
+
   return res.redirect('/profile?myorders=2');
 });
 
-// app.get('/files', (req, res) => {
-//   gfs.files.find().toArray((err, files) => {
-//     // Check if files
-//     if (!files || files.length === 0) {
-//       return res.status(404).json({
-//         err: 'No files exist',
-//       });
-//     }
+app.get('/files', (req, res) => {
+  gfs.files.find().toArray((err, files) => {
+    // Check if files
+    if (!files || files.length === 0) {
+      return res.status(404).json({
+        err: 'No files exist',
+      });
+    }
 
-//     // Files exist
-//     return res.json(files);
-//   });
-// });
+    // Files exist
+    return res.json(files);
+  });
+});
 
-// app.get('/files/:filename', (req, res) => {
-//   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-//     // Check if file
-//     if (!file || file.length === 0) {
-//       return res.status(404).json({
-//         err: 'No file exists',
-//       });
-//     }
-//     // File exists
-//     if (file.contentType === 'text/plain') {
-//       const readstream = gfs.createReadStream(file.filename);
-//       readstream.pipe(res);
-//     }
-//     // return res.send(file);
-//   });
-// });
+app.get('/files/:filename', (req, res) => {
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+    // Check if file
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: 'No file exists',
+      });
+    }
+    // File exists
+    if (file.contentType === 'text/plain') {
+      const readstream = gfs.createReadStream(file.filename);
+      readstream.pipe(res);
+    }
+    // return res.send(file);
+  });
+});
 
 const botName = 'Elbrus Bot';
 

@@ -8,6 +8,19 @@
 <div class='col-sm-3 col-md-2 col-xs-12'>
   <ul class="nav flex-row">
     <li class="nav-item">
+      {{#if admin}}
+          {{#if mydata}}
+            <a class="btn btn-primary btn-sm" aria-current="page" href="/profile?mydata=1" id="mydata">Мои данные</a>
+          {{else}}
+            <a class="btn btn-sm" aria-current="page" href="/profile?mydata=1" id="mydata">Мои данные</a>
+          {{/if}}
+          {{#if allorders}}
+          <a class="btn btn-primary btn-sm" aria-current="page" href="/profile?allorders=5" id="allorders">Все заказы</a>
+          {{else}}
+          <a class="btn btn-sm" aria-current="page" href="/profile?allorders=5" id="allorders">Все заказы</a>
+          {{/if}}
+      {{else}}
+
       {{#if mydata}}
       <a class="btn btn-primary btn-sm" aria-current="page" href="/profile?mydata=1" id="mydata">Мои данные</a>
       {{else}}
@@ -34,6 +47,7 @@
       <a class="btn btn-sm" href="/profile?neworder=4">Заказать работу</a>
       {{/if}}
     </li>
+    {{/if}}
   </ul>
   </div>
   {{#if mydata}}
@@ -82,10 +96,13 @@
   </div>
 
 {{/if}}
+
 {{#if myorders}}
  <div class='col-sm-9 col-md-10 col-xs-12'>
   <div class="mb-3 row">
     <div class='order-container'>
+      {{#each myUser.orders}}
+      <div class="table-orders" id="{{this.id}}">
        <table class="table">
           <thead>
             <tr>
@@ -98,38 +115,65 @@
           </thead>
           <tbody>
             <tr>
-              <th>ТУТ НОМЕР</th>
-              <td>ТУТ ДАТА</td>
-              <td>ТУТ ТЕМА</td>
-              <td>ТУТ ПРЕДМЕТ</td>
+              <th>{{this.number}}</th>
+              <td>{{this.createdAt}}</td>
+              <td>{{this.topic}}</td>
+              <td>{{this.subject}}</td>
               <td>ТУТ СТОИМОСТЬ</td>
             </tr>
             <tr>
           </tbody>
-        </table>
-      <div class='button-container'>
+
         <button class="btn btn-primary" id="">Обратная связь</button>
         <button class="btn btn-danger" id="showModalCancel">Отменить заказ</button>
+
+        </table>
       </div>
+      {{!-- <span class='button-container'>
+        <button class="btn btn-primary" id="">Обратная связь</button>
+        <button class="btn btn-danger" id="showModalCancel">Отменить заказ</button>
+      </span> --}}
+        {{/each}}
     </div>
     </div>
   </div>
-  
-</div>
-
 {{/if}}
+
 {{#if successorder}}
  <div class='col-sm-9 col-md-10 col-xs-12'>
   <div class="mb-3 row">
     <div class='order-container'>
-       <div class="mb-3">
-      <h4>Номер заказа:</h4>
-        <span class="badge bg-primary">Информаци о заказе:</span> {{name}}</li>
-        <button class="btn btn-outline-primary" id="download">Скачать</button>
+      <div class="table-orders" id="{{this.id}}">
+       <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Номер заказа:</th>
+              <th scope="col">Дата заказа:</th>
+              <th scope="col">Тема:</th>
+              <th scope="col">Предмет:</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th>25</th>
+              <td>30.04.2021</td>
+              <td>Ревеню-менеджмент</td>
+              <td>Управление доходами в гостиницах</td>
+            </tr>
+            <tr>
+          </tbody>
+
+        <button class="btn btn-outline-primary btn-sm" id="download"><a class="nav-link active" href="/files/da63854b99cf90ac21df68a908b9f4d4.txt" download>Скачать</a></button>
+        </table>
+      </div>
+      {{!-- <span class='button-container'>
+        <button class="btn btn-primary" id="">Обратная связь</button>
+        <button class="btn btn-danger" id="showModalCancel">Отменить заказ</button>
+      </span> --}}
+    </div>
     </div>
   </div>
-  </div>
-</div>
 {{/if}}
 
 
@@ -291,6 +335,9 @@
               <span class="">Итого</span>
               <span id="showFinalPrice">= 0 р.</span>
             </div>
+            <div class="span-cost">
+              <span id="totalCost">(Окончательная сумма после ответа менеджера)</span>
+            </div>
             <button type="submit" class="btn btn-primary btn-block" id="order-btn">Заказать</button>
           </div>
         </div>
@@ -299,6 +346,52 @@
   </div>
 </div>
 
+{{/if}}
+
+{{#if admin}}
+  {{#if allorders}}
+    <div class='col-sm-9 col-md-10 col-xs-12'>
+    <div class="mb-3 row">
+      <div class='order-container'>
+        {{#each orders}}
+        <div class="table-orders" id="{{this.id}}">
+        <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Номер заказа:</th>
+                <th scope="col">Заказчик:</th>
+                <th scope="col">Дата заказа:</th>
+                <th scope="col">Тема:</th>
+                <th scope="col">Предмет:</th>
+                <th scope="col">Стоимость:</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th>{{this.number}}</th>
+                <th>{{this.username}}</th>
+                <td>{{this.createdAt}}</td>
+                <td>{{this.topic}}</td>
+                <td>{{this.subject}}</td>
+                <td>ТУТ СТОИМОСТЬ</td>
+              </tr>
+              <tr>
+            </tbody>
+
+          <button class="btn btn-primary" id="">Выполнен</button>
+          <button class="btn btn-danger" id="showModalCancel">Отменить заказ</button>
+
+          </table>
+        </div>
+        {{!-- <span class='button-container'>
+          <button class="btn btn-primary" id="">Обратная связь</button>
+          <button class="btn btn-danger" id="showModalCancel">Отменить заказ</button>
+        </span> --}}
+          {{/each}}
+      </div>
+      </div>
+    </div>
+  {{/if}}
 {{/if}}
 
 <div class="modal" tabindex="-1" id='myModal'>
@@ -330,6 +423,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
+        {{!-- <div id="{{myUser.orders._id}}" --}}
         <button type="button" class="btn btn-primary"  id="cancel">Продолжить</button>
       </div>
     </div>

@@ -1,8 +1,8 @@
 .order-container {
   padding: 16px 16px 16px 16px;
-  box-shadow: 2px 2px 4px 0px rgba(94, 94, 94, 0.8);
+  border: 1px solid #dfdfeb;
   padding: 30px;
-  width: auto;
+  min-height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;

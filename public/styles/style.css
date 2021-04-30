@@ -461,3 +461,11 @@ ul {
 .main-map-link:first-child {
   margin-top: 25px;
 }
+
+#totalCost {
+  color: #91919c;
+}
+
+.span-cost {
+  margin: 0 0 30px;
+}

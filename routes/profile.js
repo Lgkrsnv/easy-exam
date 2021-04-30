@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
+const Order = require('../models/order');
 
 const { sessionChecker } = require('../middleware/auth');
 
@@ -21,28 +22,16 @@ const router = express.Router();
 //     }
 //   })
 
-<<<<<<< HEAD
-// .post('/upload', upload.single('file'), (req, res) => {
-//   // const upload = multer({ storage }).single('file');
-//   // upload(req, res, (err) => {
-//   //   if (err) {
-//   //     return res.end('error uploading file');
-//   //   }
-//   //   res.end('File if uploaded!');
-//   // });
-//   res.json({ file: req.file });
-// })
-
-=======
->>>>>>> main
 router.route('/').get(sessionChecker, async (req, res) => {
   const {
-    mydata, successorder, myorders, neworder,
+    mydata, successorder, myorders, neworder, allorders,
   } = req.query;
-  const myUser = await User.findOne({ email: req.session.user.email });
-  if (mydata || successorder || myorders || neworder) {
+  const myUser = await User.findOne({ email: req.session.user.email }).populate('orders');
+  const orders = await Order.find();
+
+  if (mydata || successorder || myorders || neworder || allorders) {
     return res.render('profile', {
-      mydata, myorders, successorder, neworder, myUser,
+      mydata, myorders, successorder, neworder, myUser, allorders, orders,
     });
   }
 })
