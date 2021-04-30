@@ -12,48 +12,66 @@ document.addEventListener('click', async (event) => {
   }
   if (event.target.id === 'login') {
     event.preventDefault();
-    // const name = document.getElementById('inputUsername').value;
     const email = document.getElementById('inputEmail1').value;
     const password = document.getElementById('inputPassword1').value;
-    await fetch('/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email, password,
-      }),
-    }).then((res) => {
-      console.log(res);
-      if (res.ok) {
-        window.location = 'http://localhost:3000/profile?mydata=2';
-      }
-    })
-      .catch((error) => {
-        console.log(error);
+    if (!validMail(email)) {
+      document.getElementById('subMessageEmail').textContent = 'Введите валидный электронный адрес. Пример: elbrus@gmail.com';
+    }
+    if (validMail(email)) {
+      await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email, password,
+        }),
+      }).then((res) => {
+        console.log(res);
+        if (res.status === 404) {
+          return document.getElementById('subMessagePassword').textContent = 'Ошибка: 404; Cервер не может найти запрашиваемые данные';
+        }
+        if (res.ok) {
+          return window.location = 'http://localhost:3000/';
+        } else {
+          document.getElementById('subMessagePassword').textContent = 'Проверьте введенные данные';
+        }
       });
+    }
   }
   if (event.target.id === 'registration') {
     event.preventDefault();
     const name = document.getElementById('inputUsernameRegistr').value;
     const email = document.getElementById('inputEmail1Registr').value;
     const password = document.getElementById('inputPassword1Registr').value;
-    await fetch('/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        name, email, password,
-      }),
-    }).then((res) => {
-      console.log(res);
-      if (res.ok) {
-        window.location = 'http://localhost:3000/profile';
-      }
-    })
-      .catch((error) => {
-        console.log(error);
-      });
+    const phone = document.getElementById('inputPhoneRegistr').value;
+    if (!validMail(email)) {
+      document.getElementById('validatorEmail').textContent = 'Введите валидный электронный адрес';
+    }
+    if (!validPhone(phone)) {
+      document.getElementById('validatorPhone').textContent = 'Введите валидный номер телефона. Ориентировано на российские мобильные + городские с кодом из 3 цифр';
+    }
+    if (validMail(email) && validPhone(phone)) {
+      await fetch('/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name, email, password, phone,
+        }),
+      }).then((res) => {
+        console.log(res);
+        if (res.status === 404) {
+          document.getElementById('validatorEmail').textContent = 'Пользователь с таким электронным адресом уже существует';
+        }
+        if (res.ok) {
+          window.location = 'http://localhost:3000/';
+        }
+      })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 });

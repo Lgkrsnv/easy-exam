@@ -59,15 +59,17 @@
       <div class="mb-3">
         <label class="form-label">Электронная почта:</label>
         <input type="email" class="form-control" id="userEmail" value="{{email}}">
+        <div class="form-text" id="emailSaveValidate">Мы не распространяем персональные данные пользователей</div>
       </div>
       <div class="mb-3">
         <label class="form-label">Телефон:</label>
-        <input type="tel" class="form-control" id="userPhone" value="{{name.phone}}">
+        <input type="tel" class="form-control" id="userPhone" value="{{phone}}">
+        <div class="form-text" id="phoneSvaValidate">Мы не распространяем персональные данные пользователей</div>
       </div>
       <button type="click" class="btn btn-primary" id="save" data-bs-toggle="popover" data-bs-placement="bottom" title="Предупреждение" data-bs-content="Убедитесь в валидности номера телефона или электронной почты">Сохранить изменения</button>
       <button type="click" class="btn btn-danger" id="showModal">Удалить профиль</button>
       <br></br>
-      <div class="alert alert-primary invisible" id='submessage' role="alert">
+      <div class="alert alert-primary invisible" id='submessageSave' role="alert">
       </div>
     <div class="mb-3 row">
     <h3>Изменить пароль:</h3>
@@ -82,10 +84,10 @@
       <div class="mb-3">
         <label for="newPasRepeat" class="form-label">Повторите новый пароль:</label>
         <input type="password" class="form-control" id="newPasRepeat" aria-describedby="emailHelp">
-        <div class="form-text" id="for-new-password">We'll never share your password with anyone else.</div>
+        <div class="form-text" id="for-new-password">Мы не распространяем персональные данные пользователей</div>
       </div>
       <div class="col-sm-10">
-        <button type="button" class="btn btn-primary" id="savePassword" data-bs-toggle="popover" data-bs-placement="right" title="Предупреждение" data-bs-content="Введенные пароли совпадают?">Сохранить</button>
+        <button type="button" class="btn btn-primary" id="savePassword" data-bs-toggle="popover" data-bs-placement="right" title="Предупреждение" data-bs-content="Введенные пароли совпадают? Поля не могут оставаться пустыми">Сохранить</button>
       </div>
       <br></br>
         <div class="alert alert-primary invisible" id='submessage2' role="alert">
@@ -187,9 +189,9 @@
               <label for="inputType" class="label-order">Тип работы</label>
               <select id="inputType" class="form-select" name ="type">
                 <option selected="" disabled="disabled">Выберите тип работы</option>
-                <option value="Диплом">Диплом</option>
-                <option value="Курсовая">Курсовая</option>
-                <option value="Реферат">Реферат</option>
+                <option value="Диплом" data-workPrice = '= 10.000 руб'>Диплом</option>
+                <option value="Курсовая" data-workPrice = '= 5.000 руб'>Курсовая</option>
+                <option value="Реферат" data-workPrice = '= 3.500 руб'>Реферат</option>
               </select>
             </div>
             <div class="col-sm-4">
@@ -319,7 +321,7 @@
             <ul class="calc">
               <li>
                 <span>Минимальная стоимость</span>
-                <span>1,000.00 р.</span>
+                <span id="showPrice">= 0 р.</span>
               </li>
             </ul>
           </div>
@@ -331,7 +333,7 @@
           <div class="col-md-6 col-xs-12 m-auto d-flex flex-column align-items-center">
             <div class="total-cost">
               <span class="">Итого</span>
-              <span class="">= 1,000.00 р.</span>
+              <span id="showFinalPrice">= 0 р.</span>
             </div>
             <div class="span-cost">
               <span id="totalCost">(Окончательная сумма после ответа менеджера)</span>

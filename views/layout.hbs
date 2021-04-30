@@ -58,8 +58,8 @@
 
         {{#if name}}
           <div class="dropdown">
-          <button class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
-            <ul class="dropdown-menu">
+          <button id="dLabel" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
+            <ul class="dropdown-menu" aria-labelledby="dLabel">
               <li><a class="dropdown-item" href="/profile?mydata={{name}}" id='mydata'>Мои данные</a></li>
               <li><a class="dropdown-item" href="/profile?myorders={{name}}" id='myorders'>Мои заказы</a></li>
               <li><a class="dropdown-item" href="/profile?successorder={{name}}" id='successorder'>Готовые работы</a></li>
@@ -89,12 +89,13 @@
           <div class="mb-3">
             <label for="inputEmail1" class="form-label">Электронная почта:</label>
             <input type="email" class="form-control" id="inputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text" id='subMessageEmail'>We'll never share your email with anyone else.</div>
+            <div class="form-text" id='subMessageEmail'></div>
           </div>
           <div class="mb-3">
             <label for="inputPassword1" class="form-label">Пароль:</label>
             <input type="password" class="form-control" id="inputPassword1">
-             <div id="emailHelp" class="form-text" id='subMessagePassword'>We'll never share your password with anyone else.</div>
+            <br></br>
+             <div class="form-text" id='subMessagePassword'></div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -120,17 +121,17 @@
           <div class="mb-3">
             <label for="inputUsernameRegistr" class="form-label">Username</label>
             <input type="text" class="form-control" id="inputUsernameRegistr" aria-describedby="usernameHelp">
-            <div id="usernameHelp" class="form-text">We'll never share your username with anyone else.</div>
+            <div class="form-text" id="validatorUsername"></div>
           </div>
           <div class="mb-3">
             <label for="inputEmail1Registr" class="form-label">Email address</label>
             <input type="email" class="form-control" id="inputEmail1Registr" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <div class="form-text" id='validatorEmail'></div>
           </div>
           <div class="mb-3">
-            <label for="inputEmail1Registr" class="form-label">Phone</label>
-            <input type="tel" class="form-control" id="inputPhone1Registr" aria-describedby="phoneHelp">
-            <div id="phoneHelp" class="form-text">We'll never share your phone with anyone else.</div>
+            <label for="inputPhoneRegistr" class="form-label">Phone</label>
+            <input type="tel" class="form-control" id="inputPhoneRegistr" aria-describedby="phoneHelp">
+            <div class="form-text" id='validatorPhone'></div>
           </div>
           <div class="mb-3">
             <label for="inputPassword1Registr" class="form-label">Password</label>
