@@ -32,7 +32,7 @@ document.addEventListener('click', async (event) => {
           return document.getElementById('subMessagePassword').textContent = 'Ошибка: 404; Cервер не может найти запрашиваемые данные';
         }
         if (res.ok) {
-          return window.location = 'http://localhost:3000/';
+          return window.location = res.url;
         } else {
           document.getElementById('subMessagePassword').textContent = 'Проверьте введенные данные';
         }
@@ -66,7 +66,7 @@ document.addEventListener('click', async (event) => {
           document.getElementById('validatorEmail').textContent = 'Пользователь с таким электронным адресом уже существует';
         }
         if (res.ok) {
-          window.location = 'http://localhost:3000/';
+          window.location = res.url;
         }
       })
         .catch((error) => {
