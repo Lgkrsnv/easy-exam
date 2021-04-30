@@ -1,26 +1,41 @@
 const createError = require('http-errors');
-const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
+const express = require('express');
 const session = require('express-session');
+
 const MongoStore = require('connect-mongo');
+const mongoose = require('mongoose');
+const multer = require('multer');
+const Grid = require('gridfs-stream');
+const GridFsStorage = require('multer-gridfs-storage');
+const crypto = require('crypto');
+
+const app = express();
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+
+const Qs = require('qs');
 const dbConnect = require('./db/dbConnect');
+
+const { userJoin, getCurrentUser, getRoomUsers } = require('./middleware/chatUsers');
+const formatMessage = require('./middleware/chatMessages');
+
+const Chat = require('./models/chat');
+const User = require('./models/user');
+
 const indexRouter = require('./routes/index');
 const loginRouter = require('./routes/login');
 const profileRouter = require('./routes/profile');
+
 const { cookiesCleaner } = require('./middleware/auth');
-const Chat = require('./models/chat');
-const User = require('./models/user');
-const app = express();
-
-const http = require('http').createServer(app);
+const chat = require('./models/chat');
 // const socketServer = require("socket.io")(http);
-const io = require('socket.io')(http);
-
 
 dbConnect();
 
+const conn = mongoose.connection;
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -33,6 +48,68 @@ app.use(cookieParser());
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Init gfs
+let gfs;
+
+conn.once('open', () => {
+  gfs = Grid(conn.db, mongoose.mongo);
+  gfs.collection('uploads');
+});
+
+// Create storage engine
+const storage = new GridFsStorage({
+  url: process.env.DATABASE_STRING,
+  file: (req, file) => new Promise((resolve, reject) => {
+    crypto.randomBytes(16, (err, buf) => {
+      if (err) {
+        return reject(err);
+      }
+      const filename = buf.toString('hex') + path.extname(file.originalname);
+      const fileInfo = {
+        filename: filename,
+        bucketName: 'uploads',
+      };
+      resolve(fileInfo);
+    });
+  }),
+});
+const upload = multer({ storage });
+
+app.post('/upload', upload.single('file'), (req, res) => {
+  res.json({ file: req.file });
+  // res.redirect('/');
+});
+
+// app.get('/files', (req, res) => {
+//   gfs.files.find().toArray((err, files) => {
+//     // Check if files
+//     if (!files || files.length === 0) {
+//       return res.status(404).json({
+//         err: 'No files exist',
+//       });
+//     }
+
+//     // Files exist
+//     return res.json(files);
+//   });
+// });
+
+// app.get('/files/:filename', (req, res) => {
+//   gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+//     // Check if file
+//     if (!file || file.length === 0) {
+//       return res.status(404).json({
+//         err: 'No file exists',
+//       });
+//     }
+//     // File exists
+//     if (file.contentType === 'text/plain') {
+//       const readstream = gfs.createReadStream(file.filename);
+//       readstream.pipe(res);
+//     }
+//     // return res.send(file);
+//   });
+// });
 
 const options = {
   store: MongoStore.create({ mongoUrl: process.env.DATABASE_STRING }),
@@ -61,34 +138,66 @@ io.use((socket, next) => {
 //     io.sockets.in(msg.name).emit('new_msg', {new_msg: 'hello'});
 //   });
 // });
+const botName = 'Elbrus Bot';
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
+
+  const projects = await fetchProjects(socket);
+  const author = socket.request.session.user.name;
+  socket.emit('getName', author);
+
   console.log('Connection Ready');
-  console.log("socket befoooooooooooooooooooore", socket.id);
+  // console.log("socket befoooooooooooooooooooore", socket.id);
 
-  socket.on('sendFirstMessage', async (msg) => {
+  socket.on('joinRoom', ({ username, room }) => {
+    const user = userJoin(socket.id, username, room);
 
-    // console.log(Object.keys(io.sockets.sockets));
-    // console.log(msg);
-    // console.log(socket.rooms);
-    // console.log(socket.id);
-    console.log(socket);
-    const author = socket.request.session.user;
-    // console.log(author);
-    const admin = await User.findOne({ _id: '6088445269149c8c5443244d' });
-    // console.log(admin);
-    let newChat = await Chat.create({ messages: msg.message, socketId: msg.socketId });
-    const user = await User.findOne({ email: author.email });
-    // console.log(user);
-    newChat = await Chat.findByIdAndUpdate({ _id: newChat.id }, { admin: admin.id, user: user.id });
-    // console.log(newChat);
-    socket.broadcast.emit('sendToAll', msg);
-    // отправка на индивидуальный socketid (личное сообщение)
-    //     io.to(`${socketId}`).emit('hey', 'I just met you');
+    // socket.join(user.room);
 
-    // ВНИМАНИЕ: `socket.to(socket.id).emit()` НЕ будет работать, как бы мы отправляли сообщение всем в комнату
-    // `socket.id`, а не отправителю. Вместо этого, используйте `socket.emit()`.
+    socket.emit('message', formatMessage(botName, 'Администратор ответит в ближайшее время...'));
+
+    socket.broadcast
+      .to(user.room)
+      .emit('message', formatMessage(botName, `${user.username} has joined the chat`));
+
+    // io.to(user.room).emit('roomUsers', {
+    //   room: user.room,
+    //   users: getRoomUsers(user.room),
+    // });
   });
+
+  socket.on('chatMessage', async msg => {
+    const user = getCurrentUser(socket.id);
+    io.to(user.id).emit('message', formatMessage(user.username, msg));
+  });
+
+  socket.on('msgToDb', async (message) => {
+    console.log(message);
+    await chat.create({ new: message });
+  });
+
+  // socket.on('sendFirstMessage', async (msg) => {
+  //   // console.log(Object.keys(io.sockets.sockets));
+  //   // console.log(msg);
+  //   // console.log(socket.rooms);
+  //   // console.log(socket.id);
+  //   console.log(socket);
+  //   const author = socket.request.session.user;
+  //   // console.log(author);
+  //   const admin = await User.findOne({ _id: '6088445269149c8c5443244d' });
+  //   // console.log(admin);
+  //   let newChat = await Chat.create({ messages: msg.message, socketId: msg.socketId });
+  //   const user = await User.findOne({ email: author.email });
+  //   // console.log(user);
+  //   newChat = await Chat.findByIdAndUpdate({ _id: newChat.id }, { admin: admin.id, user: user.id });
+  //   // console.log(newChat);
+  //   socket.broadcast.emit('sendToAll', msg);
+  //   // отправка на индивидуальный socketid (личное сообщение)
+  //   //     io.to(`${socketId}`).emit('hey', 'I just met you');
+
+  //   // ВНИМАНИЕ: `socket.to(socket.id).emit()` НЕ будет работать, как бы мы отправляли сообщение всем в комнату
+  //   // `socket.id`, а не отправителю. Вместо этого, используйте `socket.emit()`.
+  // });
 });
 
 app.use(cookiesCleaner);
@@ -124,7 +233,9 @@ app.use((err, req, res, next) => {
   res.render('error');
 });
 
-module.exports = { app, http };
+module.exports = {
+  app, http, storage, upload, gfs,
+};
 
 
 //6088445269149c8c5443244d

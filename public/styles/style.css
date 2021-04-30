@@ -131,6 +131,7 @@
 }
 ::-webkit-scrollbar {
   display: none;
+}
 
 .label-order {
  color: #91919c;
@@ -140,4 +141,101 @@
 .checkbox-order {
   margin-top: 40px;
 
+}
+
+.order-box {
+  border: 1px solid #dfdfeb;
+}
+
+.top-order-form {
+  padding: 27px 0;
+}
+
+.counter-order-form {
+  padding: 15px 0;
+  background: #f7f7f7;
+}
+
+.top-b {
+  border-top: 1px solid #dfdfeb;
+}
+
+.visually-hidden {
+  position: absolute;
+  clip: rect(1px, 1px, 1px, 1px);
+  padding: 0;
+  border: 0;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+.section-title {
+  font-weight: bold;
+  font-size: 32px;
+  line-height: 38px;
+}
+.show-more {
+  font-size: 18px;
+  line-height: 21px;
+}
+.info {
+  padding-bottom: 70px;
+}
+.info-wrapper {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+}
+.info-text-column {
+  width: 400px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-left: 20px;
+  padding-right: 10px;
+  background-color: #f1f2f4;
+}
+.advantages {
+  margin-bottom: 80px;
+}
+.advantages-list {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0;
+}
+.advantages-item {
+  text-align: center;
+  width: 300px;
+}
+.advantages-item h3 {
+  font-size: 30px;
+  line-height: 42px;
+  margin: 0;
+  margin-bottom: 60px;
+  position: relative;
+}
+.advantages-item h3::after {
+  content: "";
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  margin-left: -10px;
+  transform: rotate(45deg);
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+}
+.advantages-item {
+  margin: 0 10px;
+}
+h1, h2 {
+  margin-top: 30px;
+  margin-bottom: 20px;
 }

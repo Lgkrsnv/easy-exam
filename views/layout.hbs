@@ -5,10 +5,12 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
-  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="styles/style.css">
-  <script defer src="js/script.js"></script>
-  <script defer src="js/modal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous"/>
+  <link rel="stylesheet" href="/styles/style.css">
+  <link rel="stylesheet" href="/styles/chatStyle.css">
+  {{!-- <script src="js/script.js"></script> --}}
+  <script defer src="/js/modal.js"></script>
   <title>Student project</title>
 </head>
 <body>
@@ -25,20 +27,15 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" href="/chat">Chat</a>
+          <a class="nav-link active" href="/files/af11ad78a4d4e8a6c1cdb64d2c946420.txt" download>Скачать txt</a>
         </li>
-        {{#if admin}}
-          <a class="nav-link active" href="/adminChats">Chats</a>
-        {{/if}}
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-        </li>
+
       </ul>
         {{#if name}}
           <div class="dropdown"  id='myDropdown'>
           <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Личный кабинет</button>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/profile?mydata={{name}}">Мои данные</a></li>
+              <li><a class="dropdown-item" href="/profile?mydata=2">Мои данные</a></li>
               <li><a class="dropdown-item" href="/profile?myorders={{name}}">Мои заказы</a></li>
               <li><a class="dropdown-item" href="/profile?successorder={{name}}">Готовые работы</a></li>
               <li><hr class="dropdown-divider"></li>
@@ -56,7 +53,75 @@
   </div>
 </nav>
 
+{{#if name}}
   <div class='container'>
+
+<a href="javascript:void(0)" class="chatemplate" onclick="this.nextElementSibling.style.display='block';"></a>
+<div id="parent_popup_click1" class="parent_popup_click">
+<div class="popup_click"> 
+<!-- начало HTML-кода для вставки чата на сайт -->
+<div class="showChat">
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+{{!-- <h1 id="chat">Chat</h1> --}}
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="logo">
+        <i class="far fa-comments"></i>
+        <h3>Messenger</h3>
+      </div>
+      {{!-- <p id="your-name">Your name</p> --}}
+    </div>
+    {{!-- ------------------------------ --}}
+    <div class="chat-section">
+      <div class="main-wrapper">
+        <div class="chat-content">
+          <div class="message">
+            <div class="message-row other-message">
+              {{!-- <div class="message-title">
+                🗨️<span>Менеджер</span>
+              </div>
+              <div class="message-text">
+                Hello
+              </div>
+              <div class="message-time">
+                28 Апреля
+              </div> --}}
+            </div>
+            <div class="message-row you-message">
+              {{!-- <div class="message-title">
+                🗨️<span>Пользователь</span>
+              </div>
+              <div class="message-text">
+                Ok
+              </div>
+              <div class="message-time">
+                28 Апреля
+              </div> --}}
+            </div>
+          </div>
+        </div>
+        {{!-- ---------------------------------- --}}
+        <form class="msg-tex">
+          <input type="text" name="msg" id="msg" placeholder="Type Message here..." autocapitalize="off">
+          <button id="btn-send">
+            <i class="fas fa-paper-plane sendBtn">Send</i>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script defer src="/js/socket.js"></script>
+  {{!-- <script src="/socket.io/socket.io.js"></script> --}}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+</div>
+<!-- конец HTML-кода для вставки чата на сайт -->  
+<a class="close" title="Закрыть" onclick="document.getElementById('parent_popup_click1').style.display='none';"></a>
+</div>
+</div><!--/ всплывающее окно с виджетом чата chatemplate -->
+{{/if}}
+
   {{{body}}}
 </div>
 </body>
@@ -65,6 +130,4 @@
 
   <footer>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-  {{!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script> --}}
 </html>
