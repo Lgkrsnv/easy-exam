@@ -21,27 +21,44 @@ const router = express.Router();
 //     }
 //   })
 
+<<<<<<< HEAD
+// .post('/upload', upload.single('file'), (req, res) => {
+//   // const upload = multer({ storage }).single('file');
+//   // upload(req, res, (err) => {
+//   //   if (err) {
+//   //     return res.end('error uploading file');
+//   //   }
+//   //   res.end('File if uploaded!');
+//   // });
+//   res.json({ file: req.file });
+// })
+
+=======
+>>>>>>> main
 router.route('/').get(sessionChecker, async (req, res) => {
   const {
     mydata, successorder, myorders, neworder,
   } = req.query;
   const myUser = await User.findOne({ email: req.session.user.email });
-  console.log(myUser);
   if (mydata || successorder || myorders || neworder) {
     return res.render('profile', {
       mydata, myorders, successorder, neworder, myUser,
     });
   }
-  return res.render('profile', { myUser });
 })
   .put(sessionChecker, async (req, res, next) => {
     try {
       const { name, email, phone } = req.body;
+      const users = await User.find({ email })
+      console.log(users)
+
+
       const user = await User.findOneAndUpdate({ email: req.session.user.email }, { $set: { name, email, phone } }, { returnOriginal: false });
       req.session.user = user;
       res.sendStatus(200);
+
     } catch (error) {
-      res.render('error', { error });
+      res.sendStatus(500);
     }
   }).delete(sessionChecker, async (req, res) => {
     try {
@@ -54,8 +71,7 @@ router.route('/').get(sessionChecker, async (req, res) => {
     }
   });
 
-router.route('/password').put(sessionChecker, async (req, res, next) => {
-  console.log(req.body);
+router.route('/password').put(sessionChecker, async (req, res) => {
   try {
     const { password } = req.body;
     const newPassword = req.body.password1;
@@ -64,6 +80,8 @@ router.route('/password').put(sessionChecker, async (req, res, next) => {
       user.password = await bcrypt.hash(newPassword, 10);
       await user.save();
       res.sendStatus(200);
+    } else {
+      res.sendStatus(500);
     }
   } catch (error) {
     res.sendStatus(500);

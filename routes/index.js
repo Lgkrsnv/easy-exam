@@ -19,16 +19,22 @@ router
   .post(async (req, res, next) => {
     try {
       const { name, email, password, phone } = req.body;
-      const user = await User.create({
-        name,
-        email,
-        phone,
-        password: await bcrypt.hash(password, saltRounds),
-      });
-      req.session.user = user;
-      res.sendStatus(200);
+      const findUser = await User.find({ email });
+      if (!findUser.length){
+        const user = await User.create({
+          name,
+          email,
+          phone,
+          password: await bcrypt.hash(password, saltRounds),
+        });
+        req.session.user = user;
+        console.log('req.session.user!!!!!!!!!!!!!!!!!!!!!!!!!', req.session.user);
+        console.log('req.session.user.username!!!!!!!!!!!!!!1', req.session.user.username);
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(404);
+      }
     } catch (error) {
-      console.log(error);
       res.sendStatus(501);
     }
   });
@@ -38,9 +44,11 @@ router
 
   .post(async (req, res) => {
     const { email, password } = req.body;
-
+    
     const user = await User.findOne({ email });
-
+    if (user === null){
+      return res.sendStatus(404);
+    }
     if (user && (await bcrypt.compare(password, user.password))) {
       req.session.user = user;
       res.sendStatus(200);
