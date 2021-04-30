@@ -27,7 +27,8 @@ const User = require('./models/user');
 const indexRouter = require('./routes/index');
 const profileRouter = require('./routes/profile');
 const orderRouter = require('./routes/order');
-
+const sucseesRouter = require('./routes/sucsess');
+const registrationRouter = require('./routes/registration');
 const { cookiesCleaner } = require('./middleware/auth');
 const chat = require('./models/chat');
 
@@ -223,6 +224,8 @@ app.use((req, res, next) => {
 app.use('/', indexRouter);
 app.use('/profile', profileRouter);
 app.use('/order', orderRouter);
+app.use('/login', sucseesRouter);
+app.use('/signup', registrationRouter);
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
   next(createError(404));
